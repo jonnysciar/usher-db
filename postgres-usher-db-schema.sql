@@ -36,6 +36,24 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: reviews; Type: TABLE; Schema: public; Owner: usher-db
+--
+
+CREATE TABLE public.reviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    ride_id uuid NOT NULL,
+    driver_review text,
+    user_review text,
+    driver_stars integer,
+    user_stars integer,
+    CONSTRAINT reviews_driver_stars_check CHECK (((driver_stars > 0) AND (driver_stars < 6))),
+    CONSTRAINT reviews_user_stars_check CHECK (((user_stars > 0) AND (user_stars < 6)))
+);
+
+
+ALTER TABLE public.reviews OWNER TO "usher-db";
+
+--
 -- Name: rides; Type: TABLE; Schema: public; Owner: usher-db
 --
 
@@ -73,6 +91,22 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO "usher-db";
 
 --
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: usher-db
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_ride_id_key; Type: CONSTRAINT; Schema: public; Owner: usher-db
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_ride_id_key UNIQUE (ride_id);
+
+
+--
 -- Name: rides rides_pkey; Type: CONSTRAINT; Schema: public; Owner: usher-db
 --
 
@@ -94,6 +128,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_ride_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usher-db
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_ride_id_fkey FOREIGN KEY (ride_id) REFERENCES public.rides(id);
 
 
 --
