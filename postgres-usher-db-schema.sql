@@ -46,6 +46,8 @@ CREATE TABLE public.reviews (
     user_review text,
     driver_stars integer,
     user_stars integer,
+    user_review_created_at timestamp without time zone,
+    driver_review_created_at timestamp without time zone,
     CONSTRAINT reviews_driver_stars_check CHECK (((driver_stars > 0) AND (driver_stars < 6))),
     CONSTRAINT reviews_user_stars_check CHECK (((user_stars > 0) AND (user_stars < 6)))
 );
